@@ -85,7 +85,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                   
                   <div className="space-y-6 text-lg text-gray-400 leading-relaxed font-light">
                      <p>
-                        I have worked on 3 continents, managed people all over the world, created teams, excelled on high-performing teams for the most prominent tech and consulting companies, and am now the COO of Engage.
+                        I have worked on 3 continents, managed people all over the world, created teams, excelled on high-performing teams for the most prominent tech and consulting companies, and am now the CEO of two companies.
                      </p>
                      <p>
                         Regardless of what your future holds, I can help you plan for it. I will care about you, and we'll set you up for success.
