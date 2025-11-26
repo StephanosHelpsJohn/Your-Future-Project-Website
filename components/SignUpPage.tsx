@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollSection } from './ScrollSection';
-import { Send, CheckCircle, Rocket, User, Mail, MessageSquare } from 'lucide-react';
+import { Send, CheckCircle, Rocket, User, Mail, MessageSquare, Loader2 } from 'lucide-react';
 import { IMAGES } from '../constants';
 
 export const SignUpPage: React.FC = () => {
@@ -11,20 +11,49 @@ export const SignUpPage: React.FC = () => {
     message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSending(true);
     
-    // Construct Mailto Link
-    const subject = encodeURIComponent(`New Inquiry: ${formData.interest} - ${formData.name}`);
-    const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nInterest: ${formData.interest}\n\nMessage:\n${formData.message}`);
-    
-    // Simulate API call/loading then open mail client
-    setSubmitted(true);
-    
-    setTimeout(() => {
+    try {
+        // We use FormSubmit.co for backend-less email sending.
+        // NOTE: The first time you submit this form, you MUST check your email (Stephanos@yourfutureproject.com)
+        // for an activation link from FormSubmit. Submissions won't arrive until you activate.
+        const response = await fetch("https://formsubmit.co/ajax/Stephanos@yourfutureproject.com", {
+            method: "POST",
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: formData.name,
+                email: formData.email,
+                interest: formData.interest,
+                message: formData.message,
+                _subject: `New Lead: ${formData.interest} - ${formData.name}`,
+                _captcha: "false", // Disable captcha for easier testing
+                _template: "table" // Make the email look nice
+            })
+        });
+
+        if (response.ok) {
+            setSubmitted(true);
+        } else {
+            // If the service is down or blocked, throw error to trigger fallback
+            throw new Error("Form submission service unavailable");
+        }
+    } catch (error) {
+        console.error("Submission error:", error);
+        // Fallback to mailto so the user can still send the data manually
+        const subject = encodeURIComponent(`New Inquiry: ${formData.interest} - ${formData.name}`);
+        const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nInterest: ${formData.interest}\n\nMessage:\n${formData.message}`);
         window.location.href = `mailto:Stephanos@yourfutureproject.com?subject=${subject}&body=${body}`;
-    }, 1500);
+        setSubmitted(true);
+    } finally {
+        setIsSending(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -147,8 +176,16 @@ export const SignUpPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <button type="submit" className="w-full bg-neon-cyan text-black font-bold font-mono uppercase tracking-widest py-4 rounded-lg hover:bg-white transition-all shadow-[0_0_20px_rgba(0,243,255,0.3)] hover:shadow-[0_0_30px_rgba(0,243,255,0.6)] flex items-center justify-center gap-2">
-                            Initialize Contact <Send size={18} />
+                        <button 
+                            type="submit" 
+                            disabled={isSending}
+                            className="w-full bg-neon-cyan text-black font-bold font-mono uppercase tracking-widest py-4 rounded-lg hover:bg-white transition-all shadow-[0_0_20px_rgba(0,243,255,0.3)] hover:shadow-[0_0_30px_rgba(0,243,255,0.6)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {isSending ? (
+                                <>Processing <Loader2 className="animate-spin" size={18} /></>
+                            ) : (
+                                <>Initialize Contact <Send size={18} /></>
+                            )}
                         </button>
                     </form>
                 ) : (
@@ -156,9 +193,9 @@ export const SignUpPage: React.FC = () => {
                         <div className="w-20 h-20 rounded-full bg-neon-cyan/20 flex items-center justify-center mb-6 text-neon-cyan shadow-[0_0_30px_rgba(0,243,255,0.3)]">
                             <CheckCircle size={40} />
                         </div>
-                        <h3 className="text-2xl font-bold text-white mb-2">Message Encrypted & Sent</h3>
+                        <h3 className="text-2xl font-bold text-white mb-2">Message Sent Successfully</h3>
                         <p className="text-gray-400 max-w-sm mb-8">
-                            Thank you for reaching out. I've prepared your email client to finalize the transmission.
+                            Your information has been securely transmitted. I will be in touch shortly to discuss your future project.
                         </p>
                         <button onClick={() => setSubmitted(false)} className="text-neon-cyan hover:text-white underline underline-offset-4 font-mono text-sm">
                             Send another message

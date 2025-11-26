@@ -132,35 +132,35 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                </div>
 
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 relative z-10">
-                  {/* 1. Assess */}
-                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-cyan hover:bg-white/5 transition-all group">
+                  {/* 1. Assess - Top Left */}
+                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-cyan hover:bg-white/5 transition-all group lg:col-start-1 lg:row-start-1">
                      <h3 className="text-xl font-display font-bold underline decoration-neon-cyan underline-offset-4 mb-4">1. Assess</h3>
                      <p className="text-gray-400 group-hover:text-gray-200 transition-colors">
                         Explore and take note of what you want your future to look like.
                      </p>
                   </div>
 
-                  {/* 3. Implement (Visual arrangement for grid) */}
-                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-magenta hover:bg-white/5 transition-all group lg:col-start-2 lg:row-start-1">
-                     <h3 className="text-xl font-display font-bold underline decoration-neon-magenta underline-offset-4 mb-4">3. Implement</h3>
-                     <p className="text-gray-400 group-hover:text-gray-200 transition-colors">
-                        Have execution targets that we hit in order to achieve our goals.
-                     </p>
-                  </div>
-
-                  {/* 2. Plan */}
-                  <div className="glass-card p-8 rounded-xl border-l-4 border-white hover:bg-white/5 transition-all group lg:col-start-1 lg:row-start-2">
+                  {/* 2. Plan - Top Right */}
+                  <div className="glass-card p-8 rounded-xl border-l-4 border-white hover:bg-white/5 transition-all group lg:col-start-2 lg:row-start-1">
                      <h3 className="text-xl font-display font-bold underline decoration-white underline-offset-4 mb-4">2. Plan</h3>
                      <p className="text-gray-400 group-hover:text-gray-200 transition-colors">
                         Create an actionable blueprint based off our assessment.
                      </p>
                   </div>
 
-                  {/* 4. Evaluate */}
-                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-cyan hover:bg-white/5 transition-all group lg:col-start-2 lg:row-start-2">
+                  {/* 4. Evaluate - Bottom Left */}
+                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-cyan hover:bg-white/5 transition-all group lg:col-start-1 lg:row-start-2">
                      <h3 className="text-xl font-display font-bold underline decoration-neon-cyan underline-offset-4 mb-4">4. Evaluate</h3>
                      <p className="text-gray-400 group-hover:text-gray-200 transition-colors">
                         Check-in to measure our progress. Assess what went well and where we can improve.
+                     </p>
+                  </div>
+
+                  {/* 3. Implement - Bottom Right */}
+                  <div className="glass-card p-8 rounded-xl border-l-4 border-neon-magenta hover:bg-white/5 transition-all group lg:col-start-2 lg:row-start-2">
+                     <h3 className="text-xl font-display font-bold underline decoration-neon-magenta underline-offset-4 mb-4">3. Implement</h3>
+                     <p className="text-gray-400 group-hover:text-gray-200 transition-colors">
+                        Have execution targets that we hit in order to achieve our goals.
                      </p>
                   </div>
                </div>
@@ -219,27 +219,18 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                       <img src={IMAGES.natureBridge} alt="Bridge" className="absolute inset-0 w-full h-full object-cover opacity-60" />
                       <div className="absolute inset-0 bg-gradient-to-r from-neutral-900 to-transparent"></div>
                   </div>
-                  <div className="p-12 lg:p-20 flex flex-col justify-center">
+                  <div className="p-12 lg:p-20 flex flex-col justify-center text-center lg:text-left">
                       <h3 className="text-3xl font-display font-bold mb-6">TAKE THE NEXT STEP</h3>
-                      <p className="text-gray-400 mb-10 leading-relaxed">
+                      <p className="text-gray-400 leading-relaxed">
                         I want to help you prioritize what's important to you. From there, we can plan what work you need to do to reach the picture of what your life will look like.
                       </p>
-                      
-                      <div className="space-y-4">
-                        <p className="font-mono text-sm text-neon-cyan uppercase tracking-widest">Join our mailing list</p>
-                        <form className="flex gap-4" onSubmit={(e) => {
-                          e.preventDefault();
-                          onNavigate(Page.SIGNUP);
-                        }}>
-                            <input 
-                              type="email" 
-                              placeholder="ENTER EMAIL_ADDRESS" 
-                              className="flex-1 bg-black/40 border border-white/20 px-6 py-4 text-white focus:border-neon-cyan focus:outline-none font-mono text-sm"
-                            />
-                            <button className="px-8 bg-neon-cyan/10 border border-neon-cyan text-neon-cyan hover:bg-neon-cyan hover:text-black transition-all uppercase font-bold tracking-wider text-sm">
-                              Submit
-                            </button>
-                        </form>
+                      <div className="mt-8">
+                         <button 
+                           onClick={() => onNavigate(Page.SIGNUP)}
+                           className="px-8 py-3 bg-neon-cyan text-black uppercase font-bold tracking-wider hover:bg-white transition-colors"
+                         >
+                            Let's Talk
+                         </button>
                       </div>
                   </div>
                 </div>
